@@ -1,0 +1,9 @@
+###
+POST http://localhost:3001/api/posts
+Content-Type: application/json
+
+{
+    "author": "664197584c5aeb560b61a594",
+    "title": "새로운 게시글2",
+    "content": "게시글2 내용입니다."
+}

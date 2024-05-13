@@ -1,0 +1,43 @@
+### 회원가입
+POST http://localhost:3001/api/users/signup
+Content-Type: application/json
+
+{
+  "name": "홍길동",
+  "email": "hong2@example.com",
+  "password": "password123",
+  "profileImageUrl": "www.photo.com"
+}
+
+### 올바른 비밀번호로 로그인 성공
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "hong2@example.com",
+  "password": "password123"
+}
+
+### 올바르지 못한 비밀번호로 로그인 실패
+
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "hong2@example.com",
+  "password": "wrongpassword"
+}
+### 회원 정보 수정
+PUT http://localhost:3001/api/users/66429a5625797fe5c280fb12
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDI5YTU2MjU3OTdmZTVjMjgwZmIxMiIsImlhdCI6MTcxNTY0MDkzMywiZXhwIjoxNzE1NzI3MzMzfQ.iHUl6BIf2sw59Z7QbDBYUkaSHehfKAt5vnkst8JCALQ
+Content-Type: application/json
+
+{
+  "name": "홍길동2 수정",
+  "profileImageUrl": "www.newphoto.com"
+}
+
+
+### 회원 탈퇴
+DELETE http://localhost:3001/api/users/66429a5625797fe5c280fb12
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDI5YTU2MjU3OTdmZTVjMjgwZmIxMiIsImlhdCI6MTcxNTY0MDkzMywiZXhwIjoxNzE1NzI3MzMzfQ.iHUl6BIf2sw59Z7QbDBYUkaSHehfKAt5vnkst8JCALQ
