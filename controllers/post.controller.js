@@ -1,17 +1,31 @@
-const Post = require('../models/post.model'); // Post 모델 가져오기
-// 게시글 생성
+const Post = require('../models/post.model')
+const User=require("../models/user.model")
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
+
 exports.createPost = async (req, res) => {
-    try {
-      const { title, content } = req.body;
-      // req.user는 인증 미들웨어에서 설정된 값으로, 로그인한 사용자의 정보를 포함합니다.
-      const author = req.user._id;
-      const newPost = new Post({ author, title, content });
-      await newPost.save();
-      res.status(201).json(newPost);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  };
+  try {
+    const { title, content } = req.body;
+    const author = req.user._id; // 인증 미들웨어에서 설정된 사용자 ID
+    console.log(author);
+    const newPost = new Post({ author, title, content });
+    await newPost.save();
+
+    // req.user에서 직접 사용자의 posts 배열에 추가
+    req.user.posts.push(newPost._id);
+    await req.user.save(); // 변경된 사용자 정보를 저장
+
+    res.status(201).json(newPost);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
   
 
 // 게시글 상세 조회
@@ -38,8 +52,10 @@ exports.getPosts = async (req, res) => {
 
 // 게시글 수정
 exports.updatePost = async (req, res) => {
+  
     try {
         const post = await Post.findById(req.params.id);
+        
     
         if (!post) {
           return res.status(404).json({ message: 'Post not found' })
@@ -50,6 +66,7 @@ exports.updatePost = async (req, res) => {
         res.status(200).json(updatedPost)
       } catch (error) {
         res.status(400).json({ message: error.message })
+        
       }
 }
 

@@ -1,0 +1,101 @@
+@baseUrl=http://localhost:3001
+
+###
+# 회원가입
+POST {{baseUrl}}/api/users/signup
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "testuser2@example.com",
+  "password": "password123"
+}
+
+###
+# 회원가입2
+POST {{baseUrl}}/api/users/signup
+Content-Type: application/json
+
+{
+  "name": "Test User2",
+  "email": "testuser23@example.com",
+  "password": "password1232"
+}
+
+
+###
+# 로그인
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "password123"
+}
+###
+# 로그인2
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser23@example.com",
+  "password": "password1232"
+}
+
+###
+# 잘못된 비밀번호로 로그인 (실패)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "wrongpassword"
+}
+
+###
+# 게시물 작성
+# 로그인 후 반환된 token을 사용하세요
+POST {{baseUrl}}/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDJhNmE4MGJhNGQ0YWI2ZTYzMjQ0MiIsImlhdCI6MTcxNTY4Nzk1NSwiZXhwIjoxNzE1Nzc0MzU1fQ.jTSoWnug8GgixBQpDo3GYOmb91wULzt_9P2ni-yo7rM
+
+{
+  "title": "New Post",
+  "content": "This is a new post."
+}
+
+###
+# 올바르게 로그인하여 게시물 수정
+# 로그인 후 반환된 token과 생성된 게시물 ID를 사용하세요
+PUT {{baseUrl}}/api/posts/66435577f3bd7e301afa6cac
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDJhNmE4MGJhNGQ0YWI2ZTYzMjQ0MiIsImlhdCI6MTcxNTY4Nzk1NSwiZXhwIjoxNzE1Nzc0MzU1fQ.jTSoWnug8GgixBQpDo3GYOmb91wULzt_9P2ni-yo7rM
+
+{
+  "title": "Updated Post",
+  "content": "This post has been updated."
+}
+
+###
+# 올바르지 못한 로그인으로 게시물 수정 실패
+# 다른 사용자의 토큰 또는 유효하지 않은 토큰을 사용하세요
+PUT {{baseUrl}}/api/posts/66435577f3bd7e301afa6cac
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDNmZDdiODRhZWUxNTNkYWVlNjA4MCIsImlhdCI6MTcxNTczMTg1MywiZXhwIjoxNzE1ODE4MjUzfQ.7rrqBltegrssyLRJuvNjttntgOHW_5b-Bbnvtw4mC_k
+
+{
+  "title": "Failed Update Attempt",
+  "content": "This should not work."
+}
+
+###
+# 올바르지 못한 로그인으로 게시물 삭제 실패
+# 다른 사용자의 토큰 또는 유효하지 않은 토큰을 사용하세요
+DELETE {{baseUrl}}/api/posts/66435577f3bd7e301afa6cac
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDNmZDdiODRhZWUxNTNkYWVlNjA4MCIsImlhdCI6MTcxNTczMTg1MywiZXhwIjoxNzE1ODE4MjUzfQ.7rrqBltegrssyLRJuvNjttntgOHW_5b-Bbnvtw4mC_k
+
+###
+# 올바른 로그인으로 게시물 삭제 성공
+# 로그인 후 반환된 token과 생성된 게시물 ID를 사용하세요
+DELETE {{baseUrl}}/api/posts/66435577f3bd7e301afa6cac
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDJhNmE4MGJhNGQ0YWI2ZTYzMjQ0MiIsImlhdCI6MTcxNTY4Nzk1NSwiZXhwIjoxNzE1Nzc0MzU1fQ.jTSoWnug8GgixBQpDo3GYOmb91wULzt_9P2ni-yo7rM
