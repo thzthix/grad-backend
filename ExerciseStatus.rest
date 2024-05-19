@@ -1,0 +1,65 @@
+# .rest 파일 내용
+POST http://localhost:3001/api/users/66465fa2a24dbfb3aba451ce/updateTodayExerciseStatus
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDY1ZmEyYTI0ZGJmYjNhYmE0NTFjZSIsImlhdCI6MTcxNTk4OTQ4MSwiZXhwIjoxNzE2MDc1ODgxfQ.SkD9Pvvr_Po6HTAW1G1s6pE1fpdO_z1VchfhO2NZ7c8
+
+{
+  "exercises": [
+    {
+      "name": "PushUp",
+      "duration": 10, 
+      "count": 8
+    },
+    {
+      "name": "Squat",
+      "duration": 15,
+      "count": 5.5
+    }
+  ]
+}
+
+### 운동 기록 추가
+POST http://localhost:3001/api/exercise-status
+Content-Type: application/json
+
+{
+    "userId": "66465c4f6f087ac958939469",
+    "name": " 조깅1",
+    "exerciseRecord": {
+        "date": "2024-05-19T07:00:00.030Z",
+        "type": "조깅2",
+        "duration": 4335,
+        "calories": 350
+    }
+}
+
+@host = http://localhost:3001
+@userId = 66465c4f6f087ac958939469
+@date = 2024-05-17
+
+###
+
+# 운동 기록 추가/업데이트 요청
+POST {{host}}/api/exercise-status
+Content-Type: application/json
+
+{
+  "userId": "66465c4f6f087ac958939469",
+  "date":"2024-05-27T02:14:20.143Z",
+  "exercises": [
+    {
+      "type": "푸쉬업1",
+      "duration": 8670,
+      "calories": 71
+    },
+    {
+      "type": "사이드런지",
+      "duration": 4335,
+      "calories": 350
+    }
+  ]
+}
+
+###
+
+GET {{host}}/api/exercise-status/66465c4f6f087ac958939469

@@ -6,6 +6,9 @@ const cors = require('cors')
 const authRouter = require('./routes/auth.routes')
 const userRouter = require( './routes/user.routes')
 const postRouter = require('./routes/post.routes')
+const challengeRouter = require('./routes/challenge.routes')
+const exerciseStatusRouter = require('./routes/exerciseStatus.routes')
+// const exerciseStatusRouter = require('./routes/exerciseStatus.routes')
 
 // const middleware = require('./utils/middleware')
 // app.use(bodyParser.urlencoded({ extended: true })) 대신에
@@ -36,6 +39,9 @@ app.use(express.static('dist'))
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
+app.use('/api/challenges', challengeRouter)
+// app.use('/api/exerciseStatus', exerciseStatusRouter)
+app.use('/api/exercise-status',exerciseStatusRouter );
 
 
 // app.use(middleware.unknownEndpoint)

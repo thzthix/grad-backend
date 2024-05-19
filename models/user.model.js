@@ -1,27 +1,21 @@
 const mongoose = require('mongoose')
 const { hashPasswordMiddleware, addIsValidPasswordMethod } = require('../middleware/password.middleware');
 const Schema = mongoose.Schema
-
-// 운동 상태 스키마
-const ExerciseStatusSchema = new Schema({
-    date: { type: Date, default: Date.now },
-    completedTasks: [{ type: String }],
-    totalDuration: { type: Number, default: 0 } // 분 단위
-});
+const ExerciseStatusSchema =require("./ExerciseStatus.model")
 
 // 사용자 스키마
 const UserSchema = new Schema({
     name: { type: String, required: true },
+    weight: { type: Number, required: true },
+    height: { type: Number, required: true }, 
+    age: { type: Number, required: true },
+
     email: {
         type: String,
         required: true,
         unique: true,
         trim: true,
     },
-    name: {
-        type: String,
-        required: false,
-      },
       password: {
         type: String,
         required: true,
@@ -31,8 +25,15 @@ const UserSchema = new Schema({
         required: false,
         default: 'https://austinpeopleworks.com/wp-content/uploads/2020/12/blank-profile-picture-973460_1280.png' // 기본 이미지 URL
       },
-    weeklyExerciseStatus: [ExerciseStatusSchema], // 주간 운동 상태
-    todayExerciseStatus: ExerciseStatusSchema, // 오늘의 운동 상태
+    //   todayExerciseStatus: {
+    //     type: ExerciseStatusSchema,
+    //     default: () => ({})
+    // },
+    // weeklyExerciseStatus: {
+    //     type: [ExerciseStatusSchema],
+    //     default: []
+    // },
+
     todayWaterIntake: { type: Number, default: 0 }, // 오늘의 수분 섭취량 (ml 단위)
     completedChallenges: [
         {
@@ -55,7 +56,7 @@ UserSchema.set('toJSON', {
       delete returnedObject._id
       delete returnedObject.__v
       // the passwordHash should not be revealed
-      delete returnedObject.passwordHash
+      delete returnedObject.password
     }
   })
   

@@ -1,0 +1,49 @@
+POST http://localhost:3001/api/users/signup
+Content-Type: application/json
+
+{
+  "name": "홍길동2",
+  "email": "honggildong@example2.com",
+  "password": "supersecretpassword",
+  "weight": 70,
+  "height": 175,
+  "age": 30
+}
+
+###
+GET http://localhost:3001/api/users/
+
+###
+GET http://localhost:3001/api/users/66465c4f6f087ac958939469
+
+### 로그인
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "honggildong@example2.com",
+  "password": "supersecretpassword"
+}
+
+###
+
+PUT http://localhost:3001/api/users/66465c4f6f087ac958939469
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDY1YzRmNmYwODdhYzk1ODkzOTQ2OSIsImlhdCI6MTcxNTg4Nzc4MCwiZXhwIjoxNzE1OTc0MTgwfQ.W5MJE8wnVuRArnkv1CqDJ9mEj58GITSNeE8Ozaz_bFQ
+
+{
+    "weight": 70,
+  "height": 185,
+  "age": 30
+}
+
+###
+PUT http://localhost:3001/api/users/66465c4f6f087ac958939469
+Content-Type: application/json
+Authorization: Bearer eyJh1bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDY1YzRmNmYwODdhYzk1ODkzOTQ2OSIsImlhdCI6MTcxNTg4Nzc4MCwiZXhwIjoxNzE1OTc0MTgwfQ.W5MJE8wnVuRArnkv1CqDJ9mEj58GITSNeE8Ozaz_bFQ
+
+{
+    "weight": 70,
+  "height": 200,
+  "age": 30
+}

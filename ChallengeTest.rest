@@ -1,0 +1,142 @@
+### 도전과제 생성
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+    "title": "100 스쿼트",
+    "description": "하루에 스쿼트 100회 도전",
+    "startDate": "2024-06-01",
+    "endDate": "2024-06-30",
+    "type": "dailyCount",
+    "dynamicFields": {
+        "targetAmount": 100
+    }
+}
+
+###
+### 모든 도전과제 조회
+GET http://localhost:3001/api/challenges
+
+### 특정 도전과제 조회
+GET http://localhost:3001/api/challenges/664661ffa24dbfb3aba451d6
+
+
+
+### 도전과제 업데이트
+PUT http://localhost:3001/api/challenges/664661ffa24dbfb3aba451d6
+Content-Type: application/json
+
+{
+    "description": "스쿼트 200",
+    "dynamicFields": {
+        "targetAmount": 200
+    }
+}
+
+
+### dailyCount 도전과제 생성
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+    "title": "오늘의 푸시업 100번 도전",
+    "description": "하루 동안 푸시업 100번 완료하기",
+    "startDate": "2024-06-01",
+    "endDate": "2024-06-08",
+    "type": "dailyCount",
+    "dynamicFields": {
+        "targetAmount": 100,
+        "exerciseTypes": {
+            "PushUp": 100
+        }
+    }
+}
+### weeklyCount 도전과제 생성 - 매일 운동하기
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+    "title": "이번 주 매일 운동하기",
+    "description": "한 주 동안 매일 운동하기 도전",
+    "startDate": "2024-06-01",
+    "endDate": "2024-06-07",
+    "type": "weeklyCount",
+    "dynamicFields": {
+        "targetAmount": 7 
+    }
+}
+
+
+### weeklyCount 도전과제 생성 - 스쿼트 300회
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+    "title": "이번 주 스쿼트 300회 도전",
+    "description": "이번 주 동안 스쿼트 300회 완료하기",
+    "startDate": "2024-06-01",
+    "endDate": "2024-06-07",
+    "type": "weeklyCount",
+    "dynamicFields": {
+        "targetAmount": 300,
+        "exerciseTypes": {
+            "Squat": 300
+        }
+    }
+}
+
+
+### variety 도전과제 생성 - 4가지 운동하기
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+    "title": "이번 주에 4가지 운동하기",
+    "description": "이번 주 동안 4가지 다른 운동을 각각 최소 1회 이상 수행하기",
+    "startDate": "2024-06-01",
+    "endDate": "2024-06-07",
+    "type": "variety",
+    "dynamicFields": {
+        "exerciseTypes": 4,
+        "targetExercises": {
+            "PushUp": 1,
+            "Lunge": 1,
+            "Squat": 1,
+            "JumpingJack": 1
+        }
+    }
+}
+
+
+# updateAllChallengeProgress.rest
+###
+PUT http://localhost:3001/api/challenges/progress
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDY1YzRmNmYwODdhYzk1ODkzOTQ2OSIsImlhdCI6MTcxNTg4Nzc4MCwiZXhwIjoxNzE1OTc0MTgwfQ.W5MJE8wnVuRArnkv1CqDJ9mEj58GITSNeE8Ozaz_bFQ
+Content-Type: application/json
+
+{
+  "todayExerciseStatus": {
+    "exercises": {
+      "pushups": { "count": 20 },
+      "squats": { "count": 20 }
+    },
+    "totalDuration": 30
+  },
+  "weeklyExerciseStatus": [
+    {
+      "day": "Monday",
+      "exercises": {
+        "pushups": { "count": 20 },
+        "squats": { "count": 20 }
+      }
+    },
+    {
+      "day": "Tuesday",
+      "exercises": {
+        "pushups": { "count": 15 },
+        "squats": { "count": 15 }
+      }
+    }
+  ],
+  "todayWaterIntake": 2000
+}

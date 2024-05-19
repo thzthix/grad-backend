@@ -1,33 +1,113 @@
 const User = require('../models/user.model'); 
+const ExerciseStatus=require("../models/ExerciseStatus.model")
+// 칼로리 계산 함수
+const  calculateCalories=(weight, duration, MET = 3.8)=> {
+    // 입력값 유효성 검사
+    if (weight <= 0 || duration <= 0 || MET <= 0) {
+       throw new Error('모든 인자는 0보다 커야합니다.');
+   }
+   // 칼로리 계산 공식: 칼로리 = MET * 체중(kg) * 시간(hr)
+   return MET * weight * (duration / 60); // duration이 분 단위이므로 시간 단위로 변환
+}
+
+exports.updateExerciseStatus=async (req, res)=> {
+    try {
+        const { id } = req.params; // 유저 ID
+        const { exercises } = req.body; // 클라이언트로부터 받은 운동 정보
+        const user = req.user;
+    
+        if (!user) {
+          throw new Error('사용자를 찾을 수 없습니다.');
+        }
+    
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 요일 (0: 일요일, 6: 토요일)
+    
+        let totalCaloriesBurned = 0;
+        let totalDuration = 0;
+        exercises.forEach(exercise => {
+          const { duration, MET } = exercise;
+          const caloriesBurned = calculateCalories(user.weight, duration, MET);
+          exercise.caloriesBurned = caloriesBurned; // 각 운동에 대한 칼로리 세팅
+          totalCaloriesBurned += caloriesBurned;
+          totalDuration += duration;
+        });
+    
+        const todayExerciseStatus = {
+          date: today,
+          exercises,
+          caloriesBurned: totalCaloriesBurned,
+          totalDuration
+        };
+    
+        // 업데이트할 데이터 준비
+        const updateData = {
+          'todayExerciseStatus': todayExerciseStatus
+        };
+    
+        // 월요일(1)인 경우에만 주간 운동 상태 배열 초기화
+        if (dayOfWeek === 1) {
+          updateData['weeklyExerciseStatus'] = Array(7).fill(null);
+        }
+    
+        // 오늘의 운동 상태 업데이트
+        updateData[`weeklyExerciseStatus.${dayOfWeek}`] = todayExerciseStatus;
+    
+        // 변경된 필드만 업데이트
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: id },
+          { $set: updateData },
+          { new: true }
+        );
+    
+        if (!updatedUser) {
+          throw new Error('사용자 정보를 업데이트하는데 실패했습니다.');
+        }
+    
+        res.status(200).json(updatedUser);
+      } catch (error) {
+        res.status(400).json({ error: error.message });
+      }
+}
 
 // 새 사용자 생성
 exports.createUser = (req, res) => {
-  // 요청에서 사용자 정보 검증
-  if (!req.body.email) {
-    res.status(400).send({ message: "이메일은 필수입니다!" });
-    return;
-  }
-
-  // 사용자 객체 생성
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  });
-
-  // 데이터베이스에 사용자 저장
-  user
-    .save(user)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "사용자 생성 중 오류가 발생했습니다."
-      });
+    // 요청에서 필수 사용자 정보 검증
+    const { name, email, password, weight, height, age } = req.body;
+    
+    if (!email) {
+      return res.status(400).send({ message: "이메일은 필수입니다!" });
+    }
+    if (!name || !weight || !height || !age) {
+      return res.status(400).send({ message: "모든 필수 정보를 입력해야 합니다!" });
+    }
+  
+    // 사용자 객체 생성
+    const user = new User({
+      name,
+      email,
+      password,
+      weight,
+      height,
+      age,
+      // 기타 필드는 기본값이 적용되거나, 요청에서 추가적으로 받아올 수 있음
+      // 예: profileImageUrl: req.body.profileImageUrl || '기본 이미지 URL'
     });
-};
+  
+    // 데이터베이스에 사용자 저장
+    user.save()
+      .then(data => {
+        // 비밀번호를 제외한 정보 반환
+        const userData = data.toJSON();
+        res.send(userData);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: err.message || "사용자 생성 중 오류가 발생했습니다."
+        });
+      });
+  };
+  
 
 // 모든 사용자 조회
 exports.findUsers = (req, res) => {
