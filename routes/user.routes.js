@@ -8,7 +8,7 @@ const { authenticate } = require('../middleware/auth.middleware'); // authentica
   
     // 새 사용자 생성
 router.post("/signup", userController.createUser)
-  
+ 
     // 모든 사용자 조회
 router.get("/", userController.findUsers)
     // 특정 사용자 조회

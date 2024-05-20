@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/user.model'); 
 const ExerciseStatus=require("../models/ExerciseStatus.model")
 // 칼로리 계산 함수
@@ -71,41 +72,43 @@ exports.updateExerciseStatus=async (req, res)=> {
 }
 
 // 새 사용자 생성
-exports.createUser = (req, res) => {
-    // 요청에서 필수 사용자 정보 검증
-    const { name, email, password, weight, height, age } = req.body;
+exports.createUser = async (req, res) => {
+  const { name, email, password, weight, height, age } = req.body;
     
-    if (!email) {
-      return res.status(400).send({ message: "이메일은 필수입니다!" });
-    }
-    if (!name || !weight || !height || !age) {
-      return res.status(400).send({ message: "모든 필수 정보를 입력해야 합니다!" });
-    }
-  
-    // 사용자 객체 생성
-    const user = new User({
-      name,
-      email,
-      password,
-      weight,
-      height,
-      age,
-      // 기타 필드는 기본값이 적용되거나, 요청에서 추가적으로 받아올 수 있음
-      // 예: profileImageUrl: req.body.profileImageUrl || '기본 이미지 URL'
-    });
-  
-    // 데이터베이스에 사용자 저장
-    user.save()
-      .then(data => {
-        // 비밀번호를 제외한 정보 반환
-        const userData = data.toJSON();
-        res.send(userData);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: err.message || "사용자 생성 중 오류가 발생했습니다."
-        });
+  if (!email) {
+    return res.status(400).send({ message: "이메일은 필수입니다!" });
+  }
+  if (!name || !weight || !height || !age) {
+    return res.status(400).send({ message: "모든 필수 정보를 입력해야 합니다!" });
+  }
+
+  try {
+      // 사용자 객체 생성
+      const user = new User({
+        name,
+        email,
+        password,
+        weight,
+        height,
+        age,
       });
+
+      // 데이터베이스에 사용자 저장
+      await user.save();
+
+      // 로그인 처리
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: '1d',
+      });
+
+      // 비밀번호를 제외한 정보 반환
+      const userData = user.toJSON();
+      res.send({ user: userData, token }); // 사용자 정보와 토큰 반환
+  } catch (err) {
+      res.status(500).send({
+          message: err.message || "사용자 생성 중 오류가 발생했습니다."
+      });
+  }
   };
   
 
@@ -185,3 +188,4 @@ exports.deleteUser = (req, res) => {
             });
         });
 };
+// 토큰 검증 및 사용자 정보 반환

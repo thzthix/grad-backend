@@ -2,8 +2,8 @@ POST http://localhost:3001/api/users/signup
 Content-Type: application/json
 
 {
-  "name": "홍길동3",
-  "email": "honggildong3@example2.com",
+  "name": "홍길동9",
+  "email": "honggildong4@example9.com",
   "password": "supersecretpassword",
   "weight": 70,
   "height": 175,
@@ -24,6 +24,9 @@ Content-Type: application/json
   "password": "supersecretpassword"
 }
 
+###
+GET http://localhost:3001/api/auth/verify-token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDY1ZmEyYTI0ZGJmYjNhYmE0NTFjZSIsImlhdCI6MTcxNjIyODA4NywiZXhwIjoxNzE2MzE0NDg3fQ._RANpcZ4nSmW5PUsOXyRL-Zf5QURD4-hZVliakOq8P8
 ###
 
 PUT http://localhost:3001/api/users/66465c4f6f087ac958939469
