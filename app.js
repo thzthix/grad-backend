@@ -25,6 +25,8 @@ logger.info('connecting to', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI)
   .then(() => {
     logger.info('connected to MongoDB')
+      // 스케줄 작업 시작
+    require('./scheduler.js');
   })
   .catch((error) => {
     logger.error('error connection to MongoDB:', error.message)

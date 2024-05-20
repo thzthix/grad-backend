@@ -1,8 +1,38 @@
 // challengesController.js
 
-const Challenge = require('../models/challenge.model');
-const User = require('../models/user.model');
+const Challenge = require('../models/Challenge.model');
+const User = require('../models/User.model');
 const UserChallenge = require('../models/UserChallenge.model');
+
+
+exports.createChallenge = async (req, res) => {
+  try {
+    const { name, type,exercise, targetCount, description, startDate, endDate } = req.body;
+
+    // 새 도전 과제 객체 생성
+    const newChallenge = new Challenge({
+      name,
+      type,
+      exercise,
+      targetCount,
+      description,
+      startDate,
+      endDate,
+    });
+
+    // 데이터베이스에 도전 과제 저장
+    const savedChallenge = await newChallenge.save();
+
+    // 성공 응답 보내기
+    res.status(201).json(savedChallenge);
+  } catch (error) {
+    // 에러 처리
+    console.error(error);
+    res.status(500).json({ message: "도전 과제를 생성하는 중 오류가 발생했습니다." });
+  }
+};
+
+
 
 exports.updateAllChallengeProgress = async (req, res) => {
     const userId = req.user._id;
@@ -179,6 +209,7 @@ exports.completeChallenge = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
 
 
 // 모든 도전과제 조회

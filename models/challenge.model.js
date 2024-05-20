@@ -1,12 +1,31 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const ChallengeSchema = new Schema({
-  type: { type: String, required: true }, // 'specific', 'weeklyFrequency', 'dailyVariety', 'weeklyVariety', 'consecutiveDays'
-  target: { type: Number, required: true },
-  description: { type: String, required: true },
-  progress: { type: Number, default: 0 }, // 도전 과제의 진행도
+const challengeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  exercise: {
+    type: String,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['daily', 'weekly', 'monthly'] // 도전 과제 타입 필드 추가
+},
+  targetCount: {
+    type: Number,
+    required: true
+  },
+  description: String,
+  startDate: {
+    type: Date,
+    default: Date.now
+  },
+  endDate: Date
 });
 
-const Challenge = mongoose.model('Challenge', ChallengeSchema);
+const Challenge = mongoose.model('Challenge', challengeSchema);
+
 module.exports = Challenge;

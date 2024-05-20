@@ -1,45 +1,14 @@
-// const mongoose = require('mongoose');
 
-// const ExerciseStatusSchema = new mongoose.Schema({
-//   userId: {
-//     type: String,
-//     required: true
-//   },
-//   name: {
-//     type: String,
-//     required: true
-//   },
-// //   exerciseRecords: {
-// //     date: Date,
-// //     type: Array,
-// //     duration: Number,
-// //     calories: Number
-// //   }
-// exerciseRecords: [{
-//     date: {
-//       type: Date,
-//       required: true
-//     },
-//     type: {
-//       type: String,
-//       required: true
-//     },
-//     duration: {
-//       type: Number,
-//       required: true
-//     },
-//     calories: {
-//       type: Number,
-//       required: true
-//     }
-//   }]
-// });
 const mongoose = require('mongoose');
 
 const ExerciseSessionSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true
+  },
+  count:{
+    type:Number,
+    required:true
   },
   duration: {
     type: Number,

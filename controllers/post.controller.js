@@ -1,5 +1,5 @@
 const Post = require('../models/post.model')
-const User=require("../models/user.model")
+const User=require("../models/User.model")
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
   if (authorization && authorization.startsWith('Bearer ')) {

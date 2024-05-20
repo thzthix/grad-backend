@@ -120,7 +120,7 @@
 const app = require('./app') // the actual Express application
 const config = require('./utils/config')
 const logger = require('./utils/logger')
-const User = require('./models/user.model');
+const User = require('./models/User.model');
 const Post = require('./models/post.model');
 
 app.listen(config.PORT, () => {

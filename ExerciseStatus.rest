@@ -44,22 +44,27 @@ POST {{host}}/api/exercise-status
 Content-Type: application/json
 
 {
-  "userId": "66465c4f6f087ac958939469",
-  "date":"2024-05-27T02:14:20.143Z",
-  "exercises": [
-    {
-      "type": "푸쉬업1",
-      "duration": 8670,
-      "calories": 71
-    },
-    {
-      "type": "사이드런지",
-      "duration": 4335,
-      "calories": 350
-    }
-  ]
+  "userId": "664ac68a410f06b401fccc6e",
+ 
+      "date": "2024-05-20T02:14:20.143Z",
+      "exercises": [
+        {
+          "type": "pushup",
+          "count": 113,
+          "duration": 8670,
+          "calories": 71
+        },
+        {
+          "type": "lunge",
+          "count": 15,
+          "duration": 4335,
+          "calories": 350
+        }
+      ]
+  
 }
+
 
 ###
 
-GET {{host}}/api/exercise-status/66465c4f6f087ac958939469
+GET {{host}}/api/exercise-status/664ac68a410f06b401fccc6e

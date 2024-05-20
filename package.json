@@ -21,7 +21,8 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.1",
-    "mongoose": "^8.3.4"
+    "mongoose": "^8.3.4",
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "json-server": "^1.0.0-alpha.23",

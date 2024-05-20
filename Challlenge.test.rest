@@ -1,0 +1,93 @@
+# POST request for creating a pushup challenge
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+  "name": "푸시업 도전",
+  "exercise": "pushup",
+  "type": "daily",
+  "targetCount": 100,
+  "description": "하루에 푸시업 100회 완료하기",
+  "startDate": "2024-05-01",
+  "endDate": "2024-05-31"
+}
+
+###
+
+# POST request for creating a lunge challenge
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+  "name": "런지 도전",
+  "exercise": "lunge",
+  "type": "daily",
+  "targetCount": 50,
+  "description": "하루에 런지 50회 완료하기",
+  "startDate": "2024-05-01",
+  "endDate": "2024-05-31"
+}
+
+###
+
+# POST request for creating a squat challenge
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+  "name": "스쿼트 도전",
+  "exercise": "squat",
+  "type": "daily",
+  "targetCount": 75,
+  "description": "하루에 스쿼트 75회 완료하기",
+  "startDate": "2024-05-01",
+  "endDate": "2024-05-31"
+}
+
+###
+
+# POST request for creating a jumping jack challenge
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+  "name": "점핑잭 도전",
+  "exercise": "jumping jack",
+  "type": "daily",
+  "targetCount": 100,
+  "description": "하루에 점핑잭 100회 완료하기",
+  "startDate": "2024-05-01",
+  "endDate": "2024-05-31"
+}
+
+###
+
+# POST request for creating a side lunge challenge
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+  "name": "사이드 런지 도전",
+  "exercise": "side lunge",
+  "type": "daily",
+  "targetCount": 50,
+  "description": "하루에 사이드 런지 50회 완료하기",
+  "startDate": "2024-05-01",
+  "endDate": "2024-05-31"
+}
+
+###
+
+# POST request for creating a high knees challenge
+POST http://localhost:3001/api/challenges
+Content-Type: application/json
+
+{
+  "name": "하이 니즈 도전",
+  "exercise": "high knees",
+  "type": "daily",
+  "targetCount": 100,
+  "description": "하루에 하이 니즈 100회 완료하기",
+  "startDate": "2024-05-01",
+  "endDate": "2024-05-31"
+}
