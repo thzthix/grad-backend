@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model'); 
 const ExerciseStatus=require("../models/ExerciseStatus.model")
+const DailyGoal = require("../models/DailyGoal.model")
 // 칼로리 계산 함수
 const  calculateCalories=(weight, duration, MET = 3.8)=> {
     // 입력값 유효성 검사
@@ -73,19 +74,21 @@ exports.updateExerciseStatus=async (req, res)=> {
 
 // 새 사용자 생성
 exports.createUser = async (req, res) => {
-  const { name, email, password, weight, height, age } = req.body;
+  const { firstname,lastname,gender, email, password, weight, height, age } = req.body;
     
   if (!email) {
     return res.status(400).send({ message: "이메일은 필수입니다!" });
   }
-  if (!name || !weight || !height || !age) {
+  if (!firstname||!lastname|| !weight || !height || !age) {
     return res.status(400).send({ message: "모든 필수 정보를 입력해야 합니다!" });
   }
 
   try {
       // 사용자 객체 생성
       const user = new User({
-        name,
+        firstname,
+        lastname,
+        gender,
         email,
         password,
         weight,
@@ -95,6 +98,23 @@ exports.createUser = async (req, res) => {
 
       // 데이터베이스에 사용자 저장
       await user.save();
+      const dailyGoal = new DailyGoal({
+        userId: user._id,
+        exercises: {
+          pushup: { goal: 0 },
+          squat: { goal: 0 },
+          lunge: { goal: 0 },
+          sidelunge: { goal: 0 },
+        }
+      });
+      await dailyGoal.save();
+  
+      // exerciseStatus 생성
+      const exerciseStatus = new ExerciseStatus({
+        userId: user._id,
+        exerciseRecords: []
+      });
+      await exerciseStatus.save();
 
       // 로그인 처리
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {

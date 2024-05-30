@@ -1,0 +1,34 @@
+### 사용자의 DailyGoal 생성
+POST http://localhost:3001/api/daily-goals
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDY1ZmEyYTI0ZGJmYjNhYmE0NTFjZSIsImlhdCI6MTcxNjQxNjgwMSwiZXhwIjoxNzE2NTAzMjAxfQ.8ihRyjwiTCXR3z2H9emoAg1DY8klj9RmUvRcHwtqeaY
+
+{
+    "type": "lunge",
+    "goal": 10000
+}
+
+### 사용자의 특정 DailyGoal 업데이트
+PUT http://localhost:3001/api/daily-goals/6651d4497b24bae36831e5cd
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTFkNDQ5N2IyNGJhZTM2ODMxZTVjYiIsImlhdCI6MTcxNjY3Njc2MiwiZXhwIjoxNzE2NzYzMTYyfQ.MMhRM6nIryYB8u18O9rjJifcCAqxG3OR3Uv3K7IY5wo
+
+{
+  "exercises": {
+    "lunge": {
+      "goal": 30
+    },
+    "pushup": {
+      "goal": 30
+    }
+  
+  }
+}
+
+### 사용자의 모든 DailyGoals 조회
+GET http://localhost:3001/api/daily-goals
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTFkNDQ5N2IyNGJhZTM2ODMxZTVjYiIsImlhdCI6MTcxNjY3Njc2MiwiZXhwIjoxNzE2NzYzMTYyfQ.MMhRM6nIryYB8u18O9rjJifcCAqxG3OR3Uv3K7IY5wo
+
+### 사용자의 특정 날짜에 해당하는 DailyGoals 조회
+GET http://localhost:3001/api/daily-goals
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDY1ZmEyYTI0ZGJmYjNhYmE0NTFjZSIsImlhdCI6MTcxNjQxNjgwMSwiZXhwIjoxNzE2NTAzMjAxfQ.8ihRyjwiTCXR3z2H9emoAg1DY8klj9RmUvRcHwtqeaY

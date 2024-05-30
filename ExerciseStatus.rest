@@ -44,9 +44,34 @@ POST {{host}}/api/exercise-status
 Content-Type: application/json
 
 {
-  "userId": "664ac68a410f06b401fccc6e",
+  "userId": "66465fa2a24dbfb3aba451ce",
  
-      "date": "2024-05-20T02:14:20.143Z",
+      "date": "2024-05-23T02:14:20.143Z",
+      "exercises": [
+        {
+          "type": "pushup",
+          "count": 113,
+          "duration": 8670,
+          "calories": 71
+        },
+        {
+          "type": "lunge",
+          "count": 15,
+          "duration": 4335,
+          "calories": 350
+        }
+      ]
+  
+}
+
+###
+POST {{host}}/api/exercise-status
+Content-Type: application/json
+
+{
+  "userId": "6651d4497b24bae36831e5cb",
+ 
+      "date": "2024-05-26T02:14:20.143Z",
       "exercises": [
         {
           "type": "pushup",
@@ -68,3 +93,8 @@ Content-Type: application/json
 ###
 
 GET {{host}}/api/exercise-status/664ac68a410f06b401fccc6e
+
+
+###
+
+GET {{host}}/api/exercise-status/66465c4f6f087ac958939469

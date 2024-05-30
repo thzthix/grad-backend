@@ -8,6 +8,7 @@ const userRouter = require( './routes/user.routes')
 const postRouter = require('./routes/post.routes')
 const challengeRouter = require('./routes/challenge.routes')
 const exerciseStatusRouter = require('./routes/exerciseStatus.routes')
+const dailyGoalRouter=require("./routes/dailyGoal.routes")
 // const exerciseStatusRouter = require('./routes/exerciseStatus.routes')
 
 // const middleware = require('./utils/middleware')
@@ -44,6 +45,7 @@ app.use('/api/posts', postRouter)
 app.use('/api/challenges', challengeRouter)
 // app.use('/api/exerciseStatus', exerciseStatusRouter)
 app.use('/api/exercise-status',exerciseStatusRouter );
+app.use('/api/daily-goals',dailyGoalRouter );
 
 
 // app.use(middleware.unknownEndpoint)

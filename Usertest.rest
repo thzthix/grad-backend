@@ -16,6 +16,8 @@ GET http://localhost:3001/api/users/
 ###
 GET http://localhost:3001/api/users/664ac68a410f06b401fccc6e
 ### 로그인
+
+
 POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
@@ -23,6 +25,18 @@ Content-Type: application/json
   "email": "honggildong@example2.com",
   "password": "supersecretpassword"
 }
+
+### 로그인
+
+
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "bokbo@naver.com",
+  "password": "bokbo"
+}
+
 
 ###
 GET http://localhost:3001/api/auth/verify-token

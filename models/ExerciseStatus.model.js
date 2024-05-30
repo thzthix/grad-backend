@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const ExerciseSessionSchema = new mongoose.Schema({
   type: {
     type: String,
-    required: true
+    required: true,
+    enum: ['pushup', 'lunge', 'squat','jumpingjack','sidelunge','highknees']
   },
   count:{
     type:Number,

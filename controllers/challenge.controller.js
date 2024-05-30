@@ -31,7 +31,30 @@ exports.createChallenge = async (req, res) => {
     res.status(500).json({ message: "도전 과제를 생성하는 중 오류가 발생했습니다." });
   }
 };
+exports.createUserChallenge=async(req,res)=>{
+  const { name, exercise, targetCount,} = req.body;
 
+  // 필수 필드 확인
+  if (!name || !exercise || !targetCount) {
+    return res.status(400).json({ error: 'name, exercise, targetCount는 필수 항목입니다.' });
+  }
+
+  try {
+    const newChallenge = new Challenge({
+      name,
+      exercise,
+      type: 'user', // type 필드를 'user'로 설정
+      targetCount,
+    });
+
+    const savedChallenge = await newChallenge.save();
+    res.status(201).json(savedChallenge);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: '도전 과제 생성 중 오류가 발생했습니다.' });
+  }
+
+}
 
 
 exports.updateAllChallengeProgress = async (req, res) => {

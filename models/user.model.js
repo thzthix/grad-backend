@@ -5,7 +5,8 @@ const ExerciseStatusSchema =require("./ExerciseStatus.model")
 
 // 사용자 스키마
 const UserSchema = new Schema({
-    name: { type: String, required: true },
+  firstname:{ type: String, required: true },
+  lastname:{ type: String, required: true },
     weight: { type: Number, required: true },
     height: { type: Number, required: true }, 
     age: { type: Number, required: true },
@@ -25,14 +26,6 @@ const UserSchema = new Schema({
         required: false,
         default: 'https://austinpeopleworks.com/wp-content/uploads/2020/12/blank-profile-picture-973460_1280.png' // 기본 이미지 URL
       },
-    //   todayExerciseStatus: {
-    //     type: ExerciseStatusSchema,
-    //     default: () => ({})
-    // },
-    // weeklyExerciseStatus: {
-    //     type: [ExerciseStatusSchema],
-    //     default: []
-    // },
 
     todayWaterIntake: { type: Number, default: 0 }, // 오늘의 수분 섭취량 (ml 단위)
     completedChallenges: [

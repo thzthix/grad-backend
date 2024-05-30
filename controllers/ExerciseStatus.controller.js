@@ -1,102 +1,37 @@
 const ExerciseStatus = require('../models/ExerciseStatus.model');
 const User = require('../models/User.model');
 const Challenge = require('../models/Challenge.model');
+const DailyGoal = require ("../models/DailyGoal.model")
 
-async function updateChallenges(userId, date, receivedExercises) {
-  let user = await User.findById(userId).populate('challengeProgress.challengeId');
+const updateDailyGoalProgress = async (userId, receivedExercises) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  user.challengeProgress.forEach(progress => {
-    let challenge = progress.challengeId;
-    let isChallengeUpdated = false;
-
-    switch (challenge.type) {
-      case 'specificExercise':
-        receivedExercises.forEach(exercise => {
-          if (exercise.type === challenge.exerciseType) {
-            progress.progress += exercise.duration;
-            isChallengeUpdated = true;
-          }
-        });
-        break;
-
-      case 'weeklyFrequency':
-        let weekStartDate = new Date(date);
-        weekStartDate.setDate(weekStartDate.getDate() - weekStartDate.getDay()); // 주의 시작 일요일
-        let weekEndDate = new Date(weekStartDate);
-        weekEndDate.setDate(weekEndDate.getDate() + 7); // 주의 끝 토요일
-
-        let weeklyRecords = user.exerciseRecords.filter(record => {
-          let recordDate = new Date(record.date);
-          return recordDate >= weekStartDate && recordDate < weekEndDate;
-        });
-
-        let exerciseCount = weeklyRecords.reduce((acc, record) => acc + record.exercises.length, 0);
-
-        if (exerciseCount >= challenge.target) {
-          isChallengeUpdated = true;
-          progress.progress = challenge.target;
-        } else {
-          progress.progress = exerciseCount;
-        }
-        break;
-
-      case 'dailyVariety':
-        let dailyExercises = new Set(receivedExercises.map(exercise => exercise.type));
-        if (dailyExercises.size >= challenge.target) {
-          isChallengeUpdated = true;
-          progress.progress = challenge.target;
-        } else {
-          progress.progress = dailyExercises.size;
-        }
-        break;
-
-      case 'weeklyVariety':
-        let weekStart = new Date(date);
-        weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-        let weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekEnd.getDate() + 7);
-
-        let weekRecords = user.exerciseRecords.filter(record => {
-          let recordDate = new Date(record.date);
-          return recordDate >= weekStart && recordDate < weekEnd;
-        });
-
-        let exerciseTypesSet = new Set();
-        weekRecords.forEach(record => {
-          record.exercises.forEach(exercise => {
-            exerciseTypesSet.add(exercise.type);
-          });
-        });
-
-        if (exerciseTypesSet.size >= challenge.target) {
-          isChallengeUpdated = true;
-          progress.progress = challenge.target;
-        } else {
-          progress.progress = exerciseTypesSet.size;
-        }
-        break;
-
-      case 'dailyMultiExercise':
-        if (receivedExercises.length >= challenge.target) {
-          isChallengeUpdated = true;
-          progress.progress = challenge.target;
-        } else {
-          progress.progress = receivedExercises.length;
-        }
-        break;
-    }
-
-    if (isChallengeUpdated && progress.progress >= challenge.target) {
-      user.completedChallenges.push(challenge._id);
-      user.challengeProgress = user.challengeProgress.filter(p => p.challengeId._id.toString() !== challenge._id.toString());
-    }
-
-    progress.lastUpdated = Date.now();
+  // 오늘 날짜의 DailyGoal 찾기
+  const dailyGoal = await DailyGoal.findOne({
+    userId,
+    // date: {$gte: today, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)}
   });
 
-  await user.save();
-}
+  if (!dailyGoal) return; // 오늘 날짜의 DailyGoal이 없다면 함수 종료
 
+  receivedExercises.forEach(exercise => {
+    const { type, count } = exercise; // duration 대신 count를 사용, 필요에 따라 조정하세요.
+
+    if (dailyGoal.exercises[type]) { // 해당 타입의 운동이 DailyGoal에 존재하는 경우
+      let exerciseGoal = dailyGoal.exercises[type];
+      exerciseGoal.progress += count; // 운동 진행 상태 업데이트
+
+      if (exerciseGoal.progress >= exerciseGoal.goal) { // 목표 달성 여부 확인
+        exerciseGoal.isCompleted = true;
+      }
+
+      dailyGoal.exercises[type] = exerciseGoal; // 업데이트된 운동 목표로 다시 할당
+    }
+  });
+
+  await dailyGoal.save(); // 변경사항 저장
+};
 
 
 // 도전 과제 진행 상황을 업데이트하는 함수
@@ -173,6 +108,7 @@ exports.addOrUpdateExerciseRecord = async (req, res) => {
 
     await exerciseStatus.save();
     await updateChallengeProgress(userId, receivedExercises);
+    await updateDailyGoalProgress(userId, receivedExercises);
     
     res.status(200).json({
       message: "운동 기록이 성공적으로 추가/업데이트되었습니다.",
